@@ -122,16 +122,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
 2.  Open the `car-classification-with-artificial-intelligence.ipynb` file and run the cells sequentially. Ensure the `car_evaluation.csv` dataset file is in the correct path.
 
----
 
-## 📂 File Structure
-car-classification-project/
-│
-├── 📄 car-classification-with-artificial-intelligence.ipynb
-├── 💾 car_evaluation.csv
-├── 📝 README.md
-└── 📦 requirements.txt
----
 
 ## 💻 Technologies Used
 
