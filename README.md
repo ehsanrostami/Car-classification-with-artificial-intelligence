@@ -1,202 +1,149 @@
-Car Acceptability Classification Project
+# Car Acceptability Classification Project
+
+ 
+<!-- This is a generic banner. You can create and link your own image if you prefer. -->
 
 This repository contains the code and documentation for a pattern recognition project focused on classifying the acceptability of vehicles based on their features. The project implements a full machine learning pipeline, from data preprocessing to model training, evaluation, and analysis.
-<!-- You can replace this with a more relevant image if you have one -->
-Table of Contents
 
-    Project Overview
+---
 
-    Dataset
+## 📜 Table of Contents
+- [Project Overview](#-project-overview)
+- [Dataset](#-dataset)
+- [Methodology](#-methodology)
+- [Results](#-results)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Notebook](#running-the-notebook)
+- [File Structure](#-file-structure)
+- [Technologies Used](#-technologies-used)
+- [Conclusion](#-conclusion)
 
-    Methodology
+---
 
-    Results
+## 🚀 Project Overview
 
-    Getting Started
-
-        Prerequisites
-
-        Installation
-
-        Running the Notebook
-
-    File Structure
-
-    Technologies Used
-
-    Conclusion
-
-Project Overview
-
-The goal of this project is to build an intelligent system that classifies a car's acceptability (unacceptable, acceptable, good, or very good) based on six key attributes. This is a 4-class classification problem that serves as an excellent case study for applying fundamental machine learning and pattern recognition techniques.
+The goal of this project is to build an intelligent system that classifies a car's acceptability (`unacceptable`, `acceptable`, `good`, or `very good`) based on six key attributes. This is a 4-class classification problem that serves as an excellent case study for applying fundamental machine learning and pattern recognition techniques.
 
 The project covers:
+- **Data Preprocessing:** Handling categorical and ordinal features.
+- **Exploratory Data Analysis (EDA):** Visualizing feature distributions and relationships.
+- **Feature Engineering:** Comparing the performance of models on the full feature set vs. a PCA-reduced feature set.
+- **Model Training:** Implementing and tuning four different classification algorithms (KNN, Decision Tree, SVM, Gradient Boosting) and an ensemble model.
+- **Evaluation:** Analyzing model performance using metrics like Accuracy, Precision, Recall, and F1-Score, with a focus on handling class imbalance.
 
-    Data Preprocessing: Handling categorical and ordinal features.
+---
 
-    Exploratory Data Analysis (EDA): Visualizing feature distributions and relationships.
+## 📊 Dataset
 
-    Feature Engineering: Comparing the performance of models on the full feature set vs. a PCA-reduced feature set.
+The project uses the **Car Evaluation Dataset** from the UCI Machine Learning Repository.
 
-    Model Training: Implementing and tuning four different classification algorithms (KNN, Decision Tree, SVM, Gradient Boosting) and an ensemble model.
-
-    Evaluation: Analyzing model performance using metrics like Accuracy, Precision, Recall, and F1-Score, with a focus on handling class imbalance.
-
-Dataset
-
-The project uses the Car Evaluation Dataset from the UCI Machine Learning Repository.
-
-    URL: https://archive.ics.uci.edu/ml/datasets/Car+Evaluation
-
-    Instances: 1728
-
-    Features: 6
-
-        buying: Buying price (vhigh, high, med, low)
-
-        maint: Maintenance price (vhigh, high, med, low)
-
-        doors: Number of doors (2, 3, 4, 5more)
-
-        persons: Seating capacity (2, 4, more)
-
-        lug_boot: Luggage boot size (small, med, big)
-
-        safety: Estimated safety level (low, med, high)
-
-    Target Variable: class (unacc, acc, good, vgood)
+- **URL:** [https://archive.ics.uci.edu/ml/datasets/Car+Evaluation](https://archive.ics.uci.edu/ml/datasets/Car+Evaluation)
+- **Instances:** 1728
+- **Features:** 6
+  - `buying`: Buying price (`vhigh`, `high`, `med`, `low`)
+  - `maint`: Maintenance price (`vhigh`, `high`, `med`, `low`)
+  - `doors`: Number of doors (`2`, `3`, `4`, `5more`)
+  - `persons`: Seating capacity (`2`, `4`, `more`)
+  - `lug_boot`: Luggage boot size (`small`, `med`, `big`)
+  - `safety`: Estimated safety level (`low`, `med`, `high`)
+- **Target Variable:** `class` (`unacc`, `acc`, `good`, `vgood`)
 
 The dataset is entirely categorical and contains no missing values.
-Methodology
 
-    Preprocessing: All features were identified as ordinal and converted to numerical format using OrdinalEncoder to preserve their inherent order. The data was then split into a 70% training set and a 30% testing set, followed by standardization using StandardScaler.
+---
 
-    Feature Engineering: Three data versions were created for comparison:
+## 🛠️ Methodology
 
-        Version 1: All 6 original features.
+1.  **Preprocessing:** All features were identified as ordinal and converted to numerical format using `OrdinalEncoder` to preserve their inherent order. The data was then split into a 70% training set and a 30% testing set, followed by standardization using `StandardScaler`.
+2.  **Feature Engineering:** Three data versions were created for comparison:
+    - **Version 1:** All 6 original features.
+    - **Version 2:** 5 features generated by Principal Component Analysis (PCA).
+    - **Version 3:** Features selected by Sequential Feature Selection (SFS), which confirmed all 6 features were optimal.
+3.  **Modeling:** Four models (KNN, Decision Tree, SVM, Gradient Boosting) and a soft-voting ensemble were trained. `GridSearchCV` was used for hyperparameter tuning.
+4.  **Evaluation:** Models were compared based on their weighted F1-Score, a robust metric for the imbalanced nature of this dataset.
 
-        Version 2: 5 features generated by Principal Component Analysis (PCA).
+---
 
-        Version 3: Features selected by Sequential Feature Selection (SFS), which confirmed all 6 features were optimal.
+## 📈 Results
 
-    Modeling: Four models (KNN, Decision Tree, SVM, Gradient Boosting) and a soft-voting ensemble were trained. GridSearchCV was used for hyperparameter tuning.
+- The **Gradient Boosting** classifier achieved the highest performance, with an **F1-Score of 0.9903**.
+- Models trained on the full feature set significantly outperformed those trained on the PCA-reduced set, indicating that all original features are crucial for accurate prediction.
+- The top-performing models demonstrated high robustness to the dataset's class imbalance without requiring explicit balancing techniques like SMOTE.
 
-    Evaluation: Models were compared based on their weighted F1-Score, a robust metric for the imbalanced nature of this dataset.
+| Model               | Best F1-Score | Data Version        |
+|---------------------|---------------|---------------------|
+| **Gradient Boosting** | **0.9903**    | **All Features**    |
+| SVM                 | 0.9883        | All Features        |
+| Ensemble (Voting)   | 0.9844        | All Features        |
+| Decision Tree       | 0.9689        | All Features        |
 
-Results
+---
 
-    The Gradient Boosting classifier achieved the highest performance, with an F1-Score of 0.9903.
-
-    Models trained on the full feature set significantly outperformed those trained on the PCA-reduced set, indicating that all original features are crucial for accurate prediction.
-
-    The top-performing models demonstrated high robustness to the dataset's class imbalance without requiring explicit balancing techniques like SMOTE.
-
-Model	Best F1-Score	Data Version
-Gradient Boosting	0.9903	All Features
-SVM	0.9883	All Features
-Ensemble (Voting)	0.9844	All Features
-Decision Tree	0.9689	All Features
-Getting Started
+## 🏁 Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine or in a cloud environment like Kaggle or Google Colab.
-Prerequisites
 
-    Python 3.x
+### Prerequisites
 
-    Jupyter Notebook or JupyterLab
+- Python 3.x
+- Jupyter Notebook or JupyterLab
+- The required Python libraries (listed in `requirements.txt`).
 
-    The required Python libraries (listed in requirements.txt or installable via pip).
+### Installation
 
-Installation
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/car-classification-project.git
+    cd car-classification-project
+    ```
 
-    Clone the repository:
-    code Bash
+2.  **Create a virtual environment (optional but recommended):**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
 
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
-git clone https://github.com/your-username/car-classification-project.git
-cd car-classification-project
-
-  
-
-Create a virtual environment (optional but recommended):
-code Bash
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-
-  
-
-Install the required libraries:
-code Bash
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
-pip install -r requirements.txt
-
-  
-
-Note: If you don't have a requirements.txt file, you can install the packages manually:
-code Bash
-
-    IGNORE_WHEN_COPYING_START
-    IGNORE_WHEN_COPYING_END
-
-        
+3.  **Install the required libraries:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *Alternatively, install packages manually:*
+    ```bash
     pip install pandas numpy matplotlib seaborn scikit-learn mlxtend
+    ```
 
-      
+### Running the Notebook
 
-Running the Notebook
-
-    Launch Jupyter Notebook:
-    code Bash
-
-    IGNORE_WHEN_COPYING_START
-    IGNORE_WHEN_COPYING_END
-
-        
+1.  **Launch Jupyter Notebook:**
+    ```bash
     jupyter notebook
+    ```
+2.  Open the `car-classification-with-artificial-intelligence.ipynb` file and run the cells sequentially. Ensure the `car_evaluation.csv` dataset file is in the correct path.
 
-      
+---
 
-    Open the car-classification-with-artificial-intelligence.ipynb file and run the cells sequentially. Ensure the car_evaluation.csv dataset file is in the correct path as specified in the notebook.
-
-File Structure
-code Code
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
+## 📂 File Structure
 car-classification-project/
 │
-├── car-classification-with-artificial-intelligence.ipynb  # The main Jupyter Notebook with all code and analysis.
-├── car_evaluation.csv                                     # The dataset file.
-├── README.md                                              # This README file.
-└── requirements.txt                                       # List of Python dependencies.
+├── 📄 car-classification-with-artificial-intelligence.ipynb
+├── 💾 car_evaluation.csv
+├── 📝 README.md
+└── 📦 requirements.txt
+---
 
-  
+## 💻 Technologies Used
 
-Technologies Used
+- **Language:** Python 3
+- **Libraries:**
+  - **Pandas & NumPy:** For data manipulation and numerical operations.
+  - **Matplotlib & Seaborn:** For data visualization.
+  - **Scikit-learn:** For data preprocessing, modeling, and evaluation.
+  - **Mlxtend:** For Sequential Feature Selection.
 
-    Language: Python 3
+---
 
-    Libraries:
-
-        Pandas & NumPy: For data manipulation and numerical operations.
-
-        Matplotlib & Seaborn: For data visualization.
-
-        Scikit-learn: For data preprocessing, modeling, and evaluation.
-
-        Mlxtend: For Sequential Feature Selection.
-
-Conclusion
+## ✔️ Conclusion
 
 This project successfully demonstrates a complete workflow for solving a classification problem. The Gradient Boosting model proved to be highly effective, achieving near-perfect accuracy. The analysis also highlighted the importance of feature selection and the potential pitfalls of applying dimensionality reduction techniques like PCA without careful consideration.
